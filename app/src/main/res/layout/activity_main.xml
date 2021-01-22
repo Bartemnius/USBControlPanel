@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+
+<!--    <Button-->
+<!--        android:id="@+id/on"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/on"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/off"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/off"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/on"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        />-->
+
+
+<!--    <Button-->
+<!--        android:id="@+id/connect"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="268dp"-->
+<!--        android:text="@string/connect"-->
+<!--        app:layout_constraintHorizontal_bias="0.42"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/disconnect"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:text="@string/disconnect"-->
+<!--        app:layout_constraintHorizontal_bias="0.457"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/connect" />-->
+
+    <Button
+        android:id="@+id/HomePosition"
+        android:layout_width="470dp"
+        android:layout_height="65dp"
+        android:text="Home Position"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/Enable"
+        android:layout_width="468dp"
+        android:layout_height="70dp"
+        android:text="Enable"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HomePosition" />
+
+
+    <Button
+        android:id="@+id/STOP"
+        android:layout_width="279dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="STOP"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/Enable">
+
+        <RadioButton
+            android:id="@+id/InverseKinematics"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Inverse Kinematics"
+             />
+
+        <RadioButton
+            android:id="@+id/FirstAxis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="First Axis" />
+
+        <RadioButton
+            android:id="@+id/SecondAxis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Second Axis" />
+
+        <RadioButton
+            android:id="@+id/ThirdAxis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Third Axis"/>
+
+        <RadioButton
+            android:id="@+id/FourthAxis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Fourth Axis" />
+
+        <RadioButton
+            android:id="@+id/FifthAxis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Fifth Axis"/>
+
+        <RadioButton
+            android:id="@+id/Grapple"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Grapple"/>
+    </RadioGroup>
+
+
+    <com.f.kotlintry.JoystickView
+        android:id="@+id/joystick1"
+        android:layout_width="374dp"
+        android:layout_height="403dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="236dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/joystick2" />
+
+    <com.f.kotlintry.JoystickView
+        android:id="@+id/joystick2"
+        android:layout_width="374dp"
+        android:layout_height="403dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="236dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/joystick1"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

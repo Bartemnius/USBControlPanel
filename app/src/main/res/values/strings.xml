@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">KotlinTry</string>
+    <string name="on">on</string>
+    <string name="disconnect">disconnect</string>
+    <string name="off">off</string>
+    <string name="connect">connect</string>
+</resources>
