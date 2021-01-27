@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
 
     //NOT USED, DIFFERENT IDEA
     //this is the interface that i would use if I wanted to get different speed levels for my engines
-     override fun onJoystickMoved(xPercent: Float, yPercent: Float, source: Int) {
+     override fun onJoystickMoved(xPercent : Float, yPercent : Float, source: Int) {
          val joystick1 = findViewById<JoystickView>(R.id.joystick1)
          val joystick2 =  findViewById<JoystickView>(R.id.joystick2)
 
@@ -178,6 +178,57 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
                 Log.d("Left Joystick", "X: " + xPercent + " Y: " + yPercent);
             }
         }
+
+    override fun sendingData(x : Float, y : Float){
+
+
+            //Calculating the position where is joystick and sending command which direction is correct
+
+        Log.d("x",""+x);
+        Log.d("y",""+y);
+
+            //first quarter UP
+            if (y > -5.67 * x && y > 5.67 * x) {
+                sendData("U")
+                Log.d("send", "U");
+            }
+
+            else if (y < 5.67 * x && y > 0.18 * x) {
+                sendData("U")
+                sendData("R")
+            }
+
+            else if (y < 0.18 * x && y > -0.18 * x) {
+                sendData("R")
+            }
+
+            else if (y < -0.18 * x && y > -5.67 * x) {
+                sendData("D")
+                sendData("R")
+            }
+
+            else if (y < 5.67 * x && y < -5.67 * x) {
+                sendData("D")
+            }
+
+            else if (y > 5.67 * x && y < 0.18 * x) {
+                sendData("D")
+                sendData("L")
+            }
+
+            else if (y >= 0.18 * x && y < -0.18 * x) {
+                sendData("L")
+            }
+
+            else if (y > -0.18 * x && y < -5.67 * x) {
+                sendData("U")
+                sendData("L")
+            }
+
+            else {
+                sendData("0")
+            }
+    }
 
 
 

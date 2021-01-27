@@ -19,8 +19,8 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     private float hatRadius;
     private JoystickListener joystickCallback;
     public boolean isPressedDown = false;
-    private MainActivity ma ;
     //not sure yet
+
     private float x, y;
 
     //it helps with scaling on different types of screens
@@ -102,6 +102,8 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     }
 
 
+
+
     //onTouch function - main function which is used to declare what to do when joystick is touched
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -117,9 +119,11 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                 //its within the joystick
                 if (displacement<baseRadius) {
                     drawJoystick(event.getX(), event.getY());
-                    x=event.getX();
-                    y=event.getY();
+                    x=event.getX()-centerX;
+                    y=event.getY()-centerY;
+
                     joystickCallback.onJoystickMoved((event.getX() - centerX) / baseRadius, (event.getY() - centerY) / baseRadius, getId());
+                    joystickCallback.sendingData(x,y);
                 }
 
 
@@ -131,63 +135,12 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                     float constrainedX = centerX + (event.getX() - centerX) * ratio;
                     float constrainedY = centerY + (event.getY() - centerY) * ratio;
                     drawJoystick(constrainedX, constrainedY);
-                    x=constrainedX;
-                    y=constrainedY;
-                    //not sure
+                    x=constrainedX-centerX;
+                    y=constrainedY-centerY;
+
+                    joystickCallback.sendingData(x,y);
                     joystickCallback.onJoystickMoved((constrainedX - centerX) / baseRadius, (constrainedY - centerY) / baseRadius, getId());
                 }
-
-                //Calculating the position where is joystick and sending command which direction is correct
-                //first quarter UP
-                if (y > -5.67 *x && y > 5.67 *x) {
-                    ma.sendData("U");
-                }
-
-                //second quarter UP RIGHT
-                else if (y < 5.67*x && y > 0.18 *x) {
-                    ma.sendData("U");
-                    ma.sendData("R");
-                }
-
-                //third quarter RIGHT
-                else if (y  < 0.18 *x && y > -0.18 *x) {
-                    ma.sendData("R");
-                }
-
-                //fourth quarter RIGHT DOWN
-                else if (y < -0.18 *x && y > -5.67 *x) {
-                    ma.sendData("D");
-                    ma.sendData("R");
-                }
-
-                //fifth quarter DOWN
-                else if (y < 5.67 *x && y < -5.67 *x) {
-                    ma.sendData("D");
-                }
-
-                //sixth quarter DOWN LEFT
-                else if (y > 5.67 *x && y < 0.18*x) {
-                ma.sendData("D");
-                ma.sendData("L");
-                }
-
-                //seventh quarter LEFT
-                else if (y >= 0.18 *x && y < -0.18 *x) {
-                ma.sendData("L");
-                }
-
-                //eighth quarter UP RIGHT
-                else if (y > -0.18 *x && y < -5.67 *x) {
-                    ma.sendData("U");
-                    ma.sendData("L");
-                     }
-
-                //stopping. (0,0) or y=x means it goes between quarters
-                else{
-                    ma.sendData("0");
-                    };
-
-
 
             }
             //if is not pressed it will go back to its' starting position
@@ -195,8 +148,9 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
             {
                 isPressedDown = false;
                 drawJoystick(centerX,centerY);
+
                 joystickCallback.onJoystickMoved(0, 0, getId());
-                ma.sendData("0");
+                joystickCallback.sendingData(0,0);
             }
 
 
@@ -209,7 +163,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     interface JoystickListener
     {
         void onJoystickMoved(float xPercent, float yPercent, int source);
+        void sendingData(float x,float y);
     }
+
+
 
 }
 
