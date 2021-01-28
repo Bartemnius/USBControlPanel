@@ -119,11 +119,11 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                 //its within the joystick
                 if (displacement<baseRadius) {
                     drawJoystick(event.getX(), event.getY());
-                    x=event.getX()-centerX;
-                    y=event.getY()-centerY;
+                    x=event.getX();
+                    y=event.getY();
 
                     joystickCallback.onJoystickMoved((event.getX() - centerX) / baseRadius, (event.getY() - centerY) / baseRadius, getId());
-                    joystickCallback.sendingData(x,y);
+                    joystickCallback.sendingData(x,y,centerX,centerY);
                 }
 
 
@@ -135,10 +135,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                     float constrainedX = centerX + (event.getX() - centerX) * ratio;
                     float constrainedY = centerY + (event.getY() - centerY) * ratio;
                     drawJoystick(constrainedX, constrainedY);
-                    x=constrainedX-centerX;
-                    y=constrainedY-centerY;
+                    x=constrainedX;
+                    y=constrainedY;
 
-                    joystickCallback.sendingData(x,y);
+                    joystickCallback.sendingData(x,y,centerX,centerY);
                     joystickCallback.onJoystickMoved((constrainedX - centerX) / baseRadius, (constrainedY - centerY) / baseRadius, getId());
                 }
 
@@ -150,7 +150,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                 drawJoystick(centerX,centerY);
 
                 joystickCallback.onJoystickMoved(0, 0, getId());
-                joystickCallback.sendingData(0,0);
+                joystickCallback.sendingData(0,0,centerX,centerY);
             }
 
 
@@ -163,7 +163,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     interface JoystickListener
     {
         void onJoystickMoved(float xPercent, float yPercent, int source);
-        void sendingData(float x,float y);
+        void sendingData(float x,float y,float centerX, float centerY);
     }
 
 

@@ -179,56 +179,93 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
             }
         }
 
-    override fun sendingData(x : Float, y : Float){
-
+    override fun sendingData(x : Float, y : Float, centerX : Float, centerY : Float){
 
             //Calculating the position where is joystick and sending command which direction is correct
 
         Log.d("x",""+x);
         Log.d("y",""+y);
+        Log.d("centerY",""+centerY);
+        Log.d("centerX",""+centerX);
 
-            //first quarter UP
-            if (y > -5.67 * x && y > 5.67 * x) {
-                sendData("U")
-                Log.d("send", "U");
-            }
 
-            else if (y < 5.67 * x && y > 0.18 * x) {
-                sendData("U")
-                sendData("R")
-            }
+        if(y<0.9*centerY)
+        {
+            sendData("U")
+            Log.d("send", "U");
+        }
 
-            else if (y < 0.18 * x && y > -0.18 * x) {
-                sendData("R")
-            }
+        if(x>1.2*centerX)
+        {
+            sendData("R")
+            Log.d("send", "R");
+        }
 
-            else if (y < -0.18 * x && y > -5.67 * x) {
-                sendData("D")
-                sendData("R")
-            }
+        if(x<0.8*centerX)
+        {
+            sendData("L")
+            Log.d("send", "L");
+        }
 
-            else if (y < 5.67 * x && y < -5.67 * x) {
-                sendData("D")
-            }
+        if(y>1.1*centerY)
+        {
+            sendData("D")
+            Log.d("send", "D");
+        }
 
-            else if (y > 5.67 * x && y < 0.18 * x) {
-                sendData("D")
-                sendData("L")
-            }
+        if(x<0.01*centerX && y <0.01*centerY){
+            sendData("0")
+            Log.d("send", "STOP");
+        }
 
-            else if (y >= 0.18 * x && y < -0.18 * x) {
-                sendData("L")
-            }
-
-            else if (y > -0.18 * x && y < -5.67 * x) {
-                sendData("U")
-                sendData("L")
-            }
-
-            else {
-                sendData("0")
-            }
     }
+
+//            //first quarter UP
+//            if (y > -0.03*x +481 * x && y > 0.03*x + 481) {
+//                sendData("U")
+//                Log.d("send", "U");
+//            }
+//
+//            else if (y < 5.67 * x && y > 0.18 * x) {
+//                sendData("U")
+//                sendData("R")
+//            }
+//
+//            else if (y < 0.18 * x && y > -0.18 * x) {
+//                sendData("R")
+//            }
+//
+//            else if (y < -0.18 * x && y > -5.67 * x) {
+//                sendData("D")
+//                sendData("R")
+//            }
+//
+//            else if (y < 5.67 * x && y < -5.67 * x) {
+//                sendData("D")
+//            }
+//
+//            else if (y > 5.67 * x && y < 0.18 * x) {
+//                sendData("D")
+//                sendData("L")
+//            }
+//
+//            else if (y >= 0.18 * x && y < -0.18 * x) {
+//                sendData("L")
+//            }
+//
+//            else if (y > -0.18 * x && y < -5.67 * x) {
+//                sendData("U")
+//                sendData("L")
+//            }
+//
+//
+//            else {
+//                sendData("0")
+//            }
+
+
+
+
 
 
 
