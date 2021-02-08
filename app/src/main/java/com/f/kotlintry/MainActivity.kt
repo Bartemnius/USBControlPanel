@@ -13,7 +13,9 @@ import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import com.felhr.usbserial.UsbSerialDevice
 import com.felhr.usbserial.UsbSerialInterface
@@ -45,20 +47,8 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
         registerReceiver(broadcastReceiver, filter)
         startUsbConnecting();
 
-        //buttons
-//        val on = findViewById<Button>(R.id.on)
-//        val off = findViewById<Button>(R.id.off)
-//        val connect = findViewById<Button>(R.id.connect)
-//        val disconnect = findViewById<Button>(R.id.disconnect)
-        //actions for buttons
-//        connect.setOnClickListener { startUsbConnecting() ;Log.d("msg", "d")}
-//        disconnect.setOnClickListener { disconnecting() }
-        //first joystick
-        //testing the diode
-//        on.setOnClickListener { sendData("7") }
-//        off.setOnClickListener { sendData("8") }
-
         val joystick1 = findViewById<JoystickView>(R.id.joystick1)
+        val joystick2 = findViewById<JoystickView>(R.id.joystick2)
         val stop =findViewById<Button>(R.id.STOP)
         val enable =findViewById<Button>(R.id.Enable)
         val homePosition =findViewById<Button>(R.id.HomePosition)
@@ -69,7 +59,6 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
         val fifthAxis = findViewById<Button>(R.id.FifthAxis)
         val grapple = findViewById<Button>(R.id.Grapple)
         val inverseKinematics = findViewById<Button>(R.id.InverseKinematics)
-
 
         stop.setOnClickListener{sendData("0")}
         enable.setOnClickListener{sendData("9")}
@@ -82,13 +71,14 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
         fifthAxis.setOnClickListener{sendData("o");sendData("5")}
         grapple.setOnClickListener{sendData("o");sendData("g")}
         joystick1.setOnClickListener{};
+        joystick2.setOnClickListener{};
 
     }
 
 
 
 
-    //function to connect to device (USB CONNECT BUTTON)
+    //function to connect to device
     private fun startUsbConnecting() {
         val usbDevices: HashMap<String, UsbDevice>? = m_usbManager.deviceList;
         if (!usbDevices?.isEmpty()!!) {
@@ -181,94 +171,77 @@ class MainActivity : AppCompatActivity(), JoystickView.JoystickListener  {
 
     override fun sendingData(x : Float, y : Float, centerX : Float, centerY : Float){
 
-            //Calculating the position where is joystick and sending command which direction is correct
+        //Calculating the position where is joystick and sending command which direction is correct
 
         Log.d("x",""+x);
         Log.d("y",""+y);
         Log.d("centerY",""+centerY);
         Log.d("centerX",""+centerX);
 
+        val inverseKinematics = findViewById<RadioButton>(R.id.InverseKinematics)
+        val joystick1 = findViewById<View>(R.id.joystick1)
+//        val joystick2 = findViewById<View>(R.id.joystick2)
 
-        if(y<0.9*centerY)
-        {
-            sendData("U")
-            Log.d("send", "U");
+        if(inverseKinematics.isChecked){
+            //UP
+            if(y<0.9*centerY)
+            {
+                sendData("U")
+                Log.d("send", "U");
+            }
+
+            //RIGHT
+            if(x>1.2*centerX)
+            {
+                sendData("R")
+                Log.d("send", "R");
+            }
+
+            //LEFT
+            if(x<0.8*centerX)
+            {
+                sendData("L")
+                Log.d("send", "L");
+            }
+
+            //DOWN
+            if(y>1.1*centerY)
+            {
+                sendData("D")
+                Log.d("send", "D");
+            }
+
+            //STOP
+            if(x<0.01*centerX && y <0.01*centerY){
+                sendData("0")
+                Log.d("send", "STOP");
+            }
         }
-
-        if(x>1.2*centerX)
+        else
         {
-            sendData("R")
-            Log.d("send", "R");
-        }
+            //RIGHT
+            if(x>1.2*centerX)
+            {
+                sendData("8")
+                Log.d("send", "8");
+            }
 
-        if(x<0.8*centerX)
-        {
-            sendData("L")
-            Log.d("send", "L");
-        }
+            //LEFT
+            if(x<0.8*centerX)
+            {
+                sendData("7")
+                Log.d("send", "7");
+            }
 
-        if(y>1.1*centerY)
-        {
-            sendData("D")
-            Log.d("send", "D");
-        }
+            //STOP
+            if(x<0.01*centerX && y <0.01*centerY){
+                sendData("0")
+                Log.d("send", "STOP");
+            }
 
-        if(x<0.01*centerX && y <0.01*centerY){
-            sendData("0")
-            Log.d("send", "STOP");
         }
 
     }
-
-//            //first quarter UP
-//            if (y > -0.03*x +481 * x && y > 0.03*x + 481) {
-//                sendData("U")
-//                Log.d("send", "U");
-//            }
-//
-//            else if (y < 5.67 * x && y > 0.18 * x) {
-//                sendData("U")
-//                sendData("R")
-//            }
-//
-//            else if (y < 0.18 * x && y > -0.18 * x) {
-//                sendData("R")
-//            }
-//
-//            else if (y < -0.18 * x && y > -5.67 * x) {
-//                sendData("D")
-//                sendData("R")
-//            }
-//
-//            else if (y < 5.67 * x && y < -5.67 * x) {
-//                sendData("D")
-//            }
-//
-//            else if (y > 5.67 * x && y < 0.18 * x) {
-//                sendData("D")
-//                sendData("L")
-//            }
-//
-//            else if (y >= 0.18 * x && y < -0.18 * x) {
-//                sendData("L")
-//            }
-//
-//            else if (y > -0.18 * x && y < -5.67 * x) {
-//                sendData("U")
-//                sendData("L")
-//            }
-//
-//
-//            else {
-//                sendData("0")
-//            }
-
-
-
-
-
-
-
 
  }
 

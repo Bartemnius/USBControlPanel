@@ -18,10 +18,6 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     private float baseRadius;
     private float hatRadius;
     private JoystickListener joystickCallback;
-    public boolean isPressedDown = false;
-    //not sure yet
-
-    private float x, y;
 
     //it helps with scaling on different types of screens
     void setupDimensions(){
@@ -42,9 +38,9 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     //next 3 constructors are just like the ones in super class
-
     public JoystickView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        //adding this so the class now the callbacks are for this claas not the upper one. Same in every constructor
         getHolder().addCallback(this);
         setOnTouchListener(this);
         if(context instanceof JoystickListener)
@@ -61,7 +57,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
 
     public JoystickView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        getHolder().addCallback(this); //dodaję to żeby było wiadomo że call back odnoszę do metod stworzoncyh w tej klasie nie w klasie wyżej
+        getHolder().addCallback(this);
         setOnTouchListener(this);
         if(context instanceof JoystickListener)
             joystickCallback = (JoystickListener) context;
@@ -88,7 +84,6 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     //drawing the joystick using canvas
     private void drawJoystick(float positionX, float positionY)
     {
-
         Canvas myCanvas = this.getHolder().lockCanvas();
         Paint colors = new Paint();
         myCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
@@ -98,7 +93,6 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         colors.setARGB(255,0,50,50);
         myCanvas.drawCircle(positionX,positionY,hatRadius,colors);
         getHolder().unlockCanvasAndPost(myCanvas);
-
     }
 
 
@@ -112,21 +106,20 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
             //drawing joystick in position where is pressed (event)
             if(event.getAction() != event.ACTION_UP)
             {
-                isPressedDown = true;
                 //calculating the displacement between the center of the joystick and the point where u clicked
                 float displacement = (float) Math.sqrt(Math.pow(event.getX() - centerX, 2) + Math.pow(event.getY() - centerY, 2));
 
                 //its within the joystick
+                float y;
+                float x;
                 if (displacement<baseRadius) {
                     drawJoystick(event.getX(), event.getY());
-                    x=event.getX();
-                    y=event.getY();
+                    x =event.getX();
+                    y =event.getY();
 
                     joystickCallback.onJoystickMoved((event.getX() - centerX) / baseRadius, (event.getY() - centerY) / baseRadius, getId());
-                    joystickCallback.sendingData(x,y,centerX,centerY);
+                    joystickCallback.sendingData(x, y,centerX,centerY);
                 }
-
-
 
                 //its outside of our joystick
                 else{
@@ -135,10 +128,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                     float constrainedX = centerX + (event.getX() - centerX) * ratio;
                     float constrainedY = centerY + (event.getY() - centerY) * ratio;
                     drawJoystick(constrainedX, constrainedY);
-                    x=constrainedX;
-                    y=constrainedY;
+                    x =constrainedX;
+                    y =constrainedY;
 
-                    joystickCallback.sendingData(x,y,centerX,centerY);
+                    joystickCallback.sendingData(x, y,centerX,centerY);
                     joystickCallback.onJoystickMoved((constrainedX - centerX) / baseRadius, (constrainedY - centerY) / baseRadius, getId());
                 }
 
@@ -146,7 +139,6 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
             //if is not pressed it will go back to its' starting position
             else
             {
-                isPressedDown = false;
                 drawJoystick(centerX,centerY);
 
                 joystickCallback.onJoystickMoved(0, 0, getId());
@@ -159,7 +151,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         return true;
     }
 
-    //creating interface so  u can use it outside somewhere
+    //creating interface so  u can use it outside. in our case in MainActivity
     interface JoystickListener
     {
         void onJoystickMoved(float xPercent, float yPercent, int source);
